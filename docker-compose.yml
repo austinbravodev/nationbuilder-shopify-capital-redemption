@@ -1,0 +1,31 @@
+version: "3"
+
+
+services:
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    volumes:
+      - ./src:/src/
+    env_file: .env
+    depends_on:
+      - redis
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    expose:
+      - "8000"
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/src/
+    env_file: .env
+    depends_on:
+      - worker
+
+  redis:
+    image: redis:alpine

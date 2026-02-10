@@ -1,0 +1,12 @@
+FROM python:3.9-alpine
+
+RUN apk update && apk upgrade && apk add postgresql-dev gcc musl-dev
+
+WORKDIR /src
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY src .
+
+CMD celery -A worker:queue worker

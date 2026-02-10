@@ -1,0 +1,6 @@
+{% if capital.activity.data.note contains "[Capital Redemption]" %}
+{% assign content = capital.activity.data.note | replace: "[Capital Redemption]", "" | split: ":" %}
+{{ content | first | lstrip }}: <strong>{{ content | last | lstrip }}</strong>
+{% else %}
+...
+{% endif %}

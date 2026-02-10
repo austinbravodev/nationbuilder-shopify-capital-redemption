@@ -1,0 +1,22 @@
+{% assign hyphen_slug = page.slug | replace: "_", "-" %}
+{% assign custom_field_slug = page.slug | prepend: "pending_" %}
+{% assign content_slug = page.slug | append: "_content" %}
+{% assign capital_amt = request.current_signup.capital_amount_in_cents | divided_by: 100.0 %}
+{% subpage content_slug with "capital_redemption_content" %}
+{% assign labels = content.title | split: "," %}
+{% assign button = labels[2] | strip %}
+
+
+{% if request.current_signup.custom_values_for_display[custom_field_slug] %}
+{{ content.basic.content }}
+
+{% else %}
+{{ labels[0] | strip }} {{ page.parent.name }}: <strong>{{ capital_amt }}</strong>
+
+<label for="signup[custom_values][{{ custom_field_slug }}]">{{ labels[1] | strip }} {{ button }}</label>
+<input type="number" name="signup[custom_values][{{ custom_field_slug }}]" class="form-control" min=".01" max="{{ capital_amt }}" step=".01" aria-describedby="{{ hyphen_slug }}-conversion" required>
+<div id="{{ hyphen_slug }}-conversion" class="form-text text-muted"></div>
+
+{% include "capital_redemption_js" %}
+
+{% endif %}

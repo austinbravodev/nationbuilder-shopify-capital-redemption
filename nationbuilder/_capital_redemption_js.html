@@ -1,0 +1,60 @@
+<script>
+(function () {
+  const $form = document.getElementById("{{ page.slug }}_page_new_signup_form"),
+    $inpt = $form.querySelector(
+      'input[name="signup[custom_values][{{ custom_field_slug }}]"]'
+    ),
+    $conv = $form.querySelector("#{{ hyphen_slug }}-conversion"),
+    $btn = $form.querySelector('input[type="submit"]'),
+    rate = "1 = {{ content.default_face_tweet_text }}".concat(
+      (Math.floor({{ content.name }} * 100) / 100).toFixed(2)
+    );
+
+  function conv() {
+    if ($inpt.validity.valid) {
+      $conv.innerHTML = "{{ page.name }}: <strong>{{ content.default_face_tweet_text }}"
+        .concat(
+          (Math.floor($inpt.value * {{ content.name }} * 100) / 100).toFixed(
+            2
+          )
+        )
+        .concat("</strong>");
+    } else {
+      $conv.innerHTML = rate;
+    }
+  }
+
+  conv();
+  $inpt.addEventListener("input", conv);
+
+  function ajax_err() {
+    $btn.disabled = false;
+    alert("{{ content.headline }}");
+  }
+
+  $form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    $btn.disabled = true;
+    const req = new XMLHttpRequest();
+
+    if (!req) return ajax_err();
+
+    req.onreadystatechange = function () {
+      try {
+        if (req.readyState === XMLHttpRequest.DONE) {
+          req.status === 204 ? $form.submit() : ajax_err();
+        }
+      } catch (e) {
+        ajax_err();
+      }
+    };
+
+    req.open(
+      "GET",
+      "{{ content.excerpt }}/capital_redemption/{{ request.current_signup.id }}"
+    );
+    req.setRequestHeader("Cache-Control", "no-cache");
+    req.send();
+  });
+})();
+</script>
