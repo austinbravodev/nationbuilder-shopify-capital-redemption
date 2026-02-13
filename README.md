@@ -1,5 +1,7 @@
 ![Demo](./demo.jpg)
 
+Details can be found on this [LinkedIn post](https://www.linkedin.com/pulse/nationbuilder-capital-redemption-shopify-discounts-austin-bravo/).
+
 ---
 
 [Demo video:](https://www.youtube.com/watch?v=NmVnLj6FJEM)
